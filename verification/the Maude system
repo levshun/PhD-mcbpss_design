@@ -1,0 +1,56 @@
+*** (Modelling of composition of Cyber-Physical Systems using Maude.
+Usage:
+    1- launch maude, on linux: ./maude-Yices2.linux64
+    2- Maude> load cps
+    3. Maude> search in CPS:
+       init =>* S | system(Id1, P + has(wheel) + has(motor) + has(battery)) .
+)
+fmod CPS is 
+       sorts System Property SlotType Identifier   .
+*** Identifiers, and constants with no special meaning
+       op wheel : -> Identifier .
+       op chassis : -> Identifier .
+       op motor : -> Identifier .
+       op battery : -> Identifier .
+*** slots are either male or female. If there exists slots of a type t that are
+*** symmetric, we can add the equation: eq slot ( male , t ) = slot ( female , t )
+       op male : -> SlotType .
+       op female : -> SlotType .
+*** (
+    A value of type System is a multiset of components. Each component
+    is of the form system(id, conjunction of properties). The value none
+    denotes an empty multiset, init is just employed to denote the initial state.
+    This constant can be removed to be more explicit in the search.)
+       op  none : -> System . 
+       op  init : -> System . 
+       op _ | _ : System System -> System [ assoc comm id: none ] .
+*** Properties are also multisets denoting conjunctions. These can be
+*** abstract properties, e.g. the fact of being a system with a wheel,
+       op done : -> Property .
+       op _ + _ : Property Property -> Property [assoc comm id: done ] .
+*** or a concrete property, such as having 32kb of memory or a slot to
+*** plug a wheel. In this modeling, has denotes a property which is preserved by
+*** composition, slot denotes a property which is consumed during a composition
+*** I don't know if we need non-monotonic (slot--decreasing and has--increasing)
+*** properties, but it can probably be coded as well. 
+       op has : Identifier -> Property .
+       op slot : SlotType Identifier -> Property .
+*** A system is just an identifier with a multiset of properties
+       op system : Identifier Property -> System .
+*** plug is the operation that connects two systems by consuming a resource.
+       op plug  : Identifier Identifier -> Identifier .
+***  END OF FUNCTION SYMBOLS SPECIFICATION
+       vars S S1 S2 S3 : System .
+       vars P P1 P2 P3 : Property .
+       vars Id Id1 Id2 SlotModel : Identifier . 
+*** the only real rule that handles the consumption of a resource.
+       eq   system(Id1, slot(male, SlotModel) + P1) |
+            system(Id2, slot(female, SlotModel) + P2) =
+            system(plug (Id1, Id2) , P1 + P2).
+*** definition of an initial state
+       eq   init = system (wheel, slot(male, wheel) + has (wheel) + done) |
+            system (motor, slot(male, motor) + has (motor) + done) |
+            system (battery, slot(male, battery) + has(battery) + done) |
+            system (chassis, slot(female, wheel) + slot (female, battery) +
+            slot (female, motor) + done) | none . 
+endfm
