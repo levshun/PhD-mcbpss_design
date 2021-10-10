@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface version="1.1">
+  <object class="ttk.Frame" id="frame1">
+    <property name="height">940</property>
+    <property name="width">1370</property>
+    <layout manager="pack">
+      <property name="propagate">True</property>
+      <property name="side">top</property>
+    </layout>
+    <child>
+      <object class="ttk.Label" id="label1">
+        <property name="justify">center</property>
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">Please set the parameters of the attacker</property>
+        <property name="textvariable">string:l_1</property>
+        <layout manager="place">
+          <property name="relx">0.0</property>
+          <property name="x">10</property>
+          <property name="y">5</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label2">
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">1. Access type</property>
+        <property name="textvariable">string:l_2</property>
+        <layout manager="place">
+          <property name="x">10</property>
+          <property name="y">30</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label3">
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">2. Knowledge type</property>
+        <property name="textvariable">string:l_3</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">10</property>
+          <property name="y">55</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label4">
+        <property name="anchor">e</property>
+        <property name="compound">top</property>
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">3. Resources type</property>
+        <property name="textvariable">string:l_4</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">10</property>
+          <property name="y">80</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Combobox" id="combobox1">
+        <property name="exportselection">true</property>
+        <property name="justify">left</property>
+        <property name="state">readonly</property>
+        <property name="textvariable">string:cb_1</property>
+        <property name="values">"1 - no access" "2 - global networks" "3 - local networks" "4 - physical access" "5 - full access"</property>
+        <layout manager="place">
+          <property name="width">300</property>
+          <property name="x">135</property>
+          <property name="y">34</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Combobox" id="combobox2">
+        <property name="exportselection">true</property>
+        <property name="justify">left</property>
+        <property name="state">readonly</property>
+        <property name="textvariable">string:cb_2</property>
+        <property name="values">"1 - publicly available sources" "2 - system parameters" "3 - means of protection" "4 - software and hardware"</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="width">300</property>
+          <property name="x">135</property>
+          <property name="y">58</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Combobox" id="combobox3">
+        <property name="justify">left</property>
+        <property name="state">readonly</property>
+        <property name="textvariable">string:cb_3</property>
+        <property name="values">"1 - widely-spread tools and known vulnerabilities" "2 - specialized tools and non-used vulnerabilities" "3 - a possibility to investigate the system"</property>
+        <layout manager="place">
+          <property name="width">300</property>
+          <property name="x">135</property>
+          <property name="y">83</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="button1">
+        <property name="command" type="command" cbtype="simple">button1_callback</property>
+        <property name="default">normal</property>
+        <property name="text" translatable="yes">Design</property>
+        <layout manager="place">
+          <property name="width">70</property>
+          <property name="x">365</property>
+          <property name="y">117</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label5">
+        <property name="justify">center</property>
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">Please set the tasks of the designed system</property>
+        <property name="textvariable">string:l_5</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">450</property>
+          <property name="y">5</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label6">
+        <property name="justify">center</property>
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">1. First task</property>
+        <property name="textvariable">string:l_6</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">450</property>
+          <property name="y">30</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label7">
+        <property name="justify">center</property>
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">2. Second task</property>
+        <property name="textvariable">string:l_7</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">450</property>
+          <property name="y">55</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label8">
+        <property name="justify">center</property>
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">3. Third task</property>
+        <property name="textvariable">string:l_8</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">450</property>
+          <property name="y">80</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Combobox" id="combobox4">
+        <property name="exportselection">true</property>
+        <property name="justify">left</property>
+        <property name="state">readonly</property>
+        <property name="textvariable">string:cb_4</property>
+        <property name="values">"1 - centralized system management"</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="width">300</property>
+          <property name="x">550</property>
+          <property name="y">34</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Combobox" id="combobox5">
+        <property name="exportselection">true</property>
+        <property name="justify">left</property>
+        <property name="state">readonly</property>
+        <property name="textvariable">string:cb_5</property>
+        <property name="values">"2 - static perimeter monitoring"</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="width">300</property>
+          <property name="x">550</property>
+          <property name="y">58</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Combobox" id="combobox6">
+        <property name="exportselection">true</property>
+        <property name="justify">left</property>
+        <property name="state">readonly</property>
+        <property name="textvariable">string:cb_6</property>
+        <property name="values">"3 - mobile perimeter monitoring"</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="width">300</property>
+          <property name="x">550</property>
+          <property name="y">83</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Text" id="text1">
+        <property name="borderwidth">2</property>
+        <property name="padx">2</property>
+        <property name="pady">2</property>
+        <property name="tabstyle">tabular</property>
+        <property name="undo">true</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="bordermode">inside</property>
+          <property name="height">320</property>
+          <property name="width">824</property>
+          <property name="x">15</property>
+          <property name="y">211</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Scrollbar" id="scrollbar1">
+        <property name="orient">vertical</property>
+        <property name="takefocus">true</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="height">322</property>
+          <property name="width">15</property>
+          <property name="x">840</property>
+          <property name="y">211</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="button2">
+        <property name="command" type="command" cbtype="simple">button2_callback</property>
+        <property name="default">normal</property>
+        <property name="text" translatable="yes">System</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">15</property>
+          <property name="y">187</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Button" id="button3">
+        <property name="command" type="command" cbtype="simple">button3_callback</property>
+        <property name="default">disabled</property>
+        <property name="text" translatable="yes">Select</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="width">70</property>
+          <property name="x">450</property>
+          <property name="y">117</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label9">
+        <property name="justify">center</property>
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">Please select the components of the system</property>
+        <property name="textvariable">string:l_9</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">870</property>
+          <property name="y">5</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Canvas" id="canvas1">
+        <property name="borderwidth">2</property>
+        <property name="insertborderwidth">2</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="bordermode">inside</property>
+          <property name="height">490</property>
+          <property name="width">475</property>
+          <property name="x">870</property>
+          <property name="y">40</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Scrollbar" id="scrollbar2">
+        <property name="orient">vertical</property>
+        <property name="takefocus">true</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="bordermode">inside</property>
+          <property name="height">490</property>
+          <property name="width">15</property>
+          <property name="x">1345</property>
+          <property name="y">40</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Text" id="text2">
+        <property name="borderwidth">2</property>
+        <property name="height">10</property>
+        <property name="padx">2</property>
+        <property name="pady">2</property>
+        <property name="tabstyle">tabular</property>
+        <property name="undo">true</property>
+        <property name="width">50</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="bordermode">inside</property>
+          <property name="height">350</property>
+          <property name="width">1330</property>
+          <property name="x">15</property>
+          <property name="y">571</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Label" id="label10">
+        <property name="justify">center</property>
+        <property name="padding">5</property>
+        <property name="text" translatable="yes">Output</property>
+        <property name="textvariable">string:l_10</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">10</property>
+          <property name="y">540</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="ttk.Scrollbar" id="scrollbar3">
+        <property name="orient">vertical</property>
+        <property name="takefocus">true</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="bordermode">inside</property>
+          <property name="height">350</property>
+          <property name="width">15</property>
+          <property name="x">1345</property>
+          <property name="y">571</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Checkbutton" id="checkbutton1">
+        <property name="command" type="command" cbtype="simple">chbtn1_callback</property>
+        <property name="offvalue">0</property>
+        <property name="onvalue">1</property>
+        <property name="text" translatable="yes">automatic</property>
+        <property name="variable">string:chbtn_1</property>
+        <layout manager="place">
+          <property name="anchor">nw</property>
+          <property name="x">410</property>
+          <property name="y">157</property>
+        </layout>
+      </object>
+    </child>
+  </object>
+</interface>
