@@ -2416,7 +2416,7 @@ class DesignApp:
         self.builder = builder = pygubu.Builder()
 
         # 2: Load an ui file
-        builder.add_from_file("interface/design_GUI.ui")
+        builder.add_from_file("application.ui")
 
         # 3: Create the window
         self.window = builder.get_object("frame1")
