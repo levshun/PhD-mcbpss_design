@@ -1,0 +1,204 @@
+#  cps_composition.dat: data file for daTac
+
+#1
+# AC operators: (list of op1, op2, ...)
+.
+
+#2
+# C operators: (list of op1, op2, ...)
+=
+
+#3
+# Minimal operator:
+empty
+
+#4
+# Precedence ordering on operators:
+#
+# This first set of precedence corresponds to a search from the base system, just as
+# Maude does, but less efficiently because it relies on AC-unification instead of AC-matching
+# (not counting the implementation problems)
+#
+# available > { component  ,  has , system , slot ,  male , female , motor , battery , wheel , plug , empty }
+# system > {plug}
+# slot > {plug , has }
+#
+
+# plug > { has , slot , male , female , system , s , 0 , . , empty }
+# system > { . }
+
+#5
+# Status of operators:
+# ex:    f, g : lexico_left_right
+#        h : lexico_right_left
+#        i : multiset
+# default: lexico_left_right
+. : multiset
+# composition : lexico_right_left
+
+#6
+# Strategy for applying inferences:
+# operators:  ",": or
+#             ";": and
+#             "+": then
+#             "(...)n": iteration (n can be *)
+# Example: ref,(rcp;ep;(rp)*),(ep+rp)5
+# Default: rp,lp,crp,clp,ep,ref,ef,res,f
+res
+
+#70
+# Theory already treated: (list of clauses)
+
+#7
+# Theory: (list of clauses)
+
+=> needs(x).has(x) = empty
+=> empty.empty = empty
+
+
+# initial state for the backward search
+# the x... in the id (xw, xm, xc, xb ) is incremented when a component is used, and
+# a component with a lower number is introduced, ready to be used. This has two usages:
+# - as in this example, a component can be re-used any number of times when the id initially is a variable
+# - but we can also impose limits on the number of components that can be used (e.g., because it is rare
+#   or expensive) by setting a Peano integer, e.g. use
+#      		     	       system(slot(male,motor,id(motor,s(s(0)))).empty,has(motor).empty,xm)
+#   instead of 
+#      		     	       system(slot(male,motor,id(motor,xm)).empty,has(motor).empty,xm)
+# if there is only 2 motors that are available
+# This differs dramatically from the Maude specification, as the backward search strategy is then insensitive
+# to the number of components of each type there is. Of course, there is still a combinatorial explosion parameterised
+# by the number of different types of components.
+
+=> composition(\
+		system(slot(male,wheel,id(wheel,xw)).empty,has(wheel).empty,xw).\
+		system(slot(male,motor,id(motor,xm)).empty,has(motor).empty,xm).\
+		system(slot(male,battery,id(battery,xb)).empty,has(battery).empty,xb).\
+		system(slot(female,wheel,id(chassis,xc)).slot(female,motor,id(chassis,xc)).\
+    slot(female,battery,id(chassis,xc)).empty,empty,xc).empty,\
+		needs(wheel).needs(motor).needs(battery).empty,\
+		empty,\
+		empty)
+
+
+# rule solving a functional requirement
+composition(\
+		system(xMaterialRequirements,has(xProperty).xProvides,s(xId)).xAvailable,\
+		needs(xProperty).xNeededProperties,\
+		empty,\
+		xComposition) =>\
+composition(system(xMaterialRequirements,has(xProperty).xProvides,xId).xAvailable,\
+		xNeededProperties.xProvides,\
+		xMaterialRequirements,\
+		xComposition)
+
+# rules solving a material requirement (for male and female plugs)
+
+composition(\
+xAvailable.system(slot(male,xType,id(xComponentName,s(xIdm))).xOtherMaterialRequirements,xProperties,s(xIdm)),\
+xNeededProperties,\
+xMaterialRequirements.slot(female,xType,xIdf),\
+xComposition) =>\
+composition(xAvailable.system(slot(male,xType,id(xComponentName,xIdm)).xOtherMaterialRequirements,xProperties,xIdm),\
+xNeededProperties.xProperties,\
+xMaterialRequirements.xOtherMaterialRequirements,\
+xComposition.plug(id(xComponentName,s(xIdm)),xType,xIdf))
+
+composition(\
+xAvailable.system(slot(female,xType,id(xComponentName,s(xIdf))).xOtherMaterialRequirements,xProperties,s(xIdf)),\
+xNeededProperties,\
+xMaterialRequirements.slot(male,xType,xIdm),\
+xComposition) =>\
+composition(xAvailable.system(slot(female,xType,id(xComponentName,xIdf)).xOtherMaterialRequirements,xProperties,xIdf),\
+xNeededProperties.xProperties,\
+xMaterialRequirements.xOtherMaterialRequirements,\
+xComposition.plug(xIdm,xType,id(xComponentName,s(xIdf))))
+
+
+# the second member can have more has(...), we actually just want to have no need. Hence
+# the last "discard" rule, available only when there is no material requirements, to minimize
+# the possible interleavings
+
+composition(xAvailable,x.has(y),empty,xComposition)\
+		=> composition(xAvailable,x,empty,xComposition)
+
+
+#8
+# Negation of the conjecture: (list of clauses)
+
+composition(xAvailable,empty,empty,xComposition) => 
+
+#9
+# Maximal number of clauses:
+1000
+
+#10
+# Use of uncomplete AC-unification:
+false
+
+#11
+# Maximal number of AC-MGUs: (0 -> no limit)
+0
+
+#12
+# Use of simplification rules:
+true
+
+#121
+# Use of Otter-like strategy for simplification:
+true
+
+#122
+# Maximal depth for simplification: (0 -> no limit)
+0
+
+#14
+# Subsumption algorithm:
+#   forward subsumption:  0: None  1: AC-matching  2: Gottlob&Leitsch
+# + backward subsumption:          4: AC-matching  5: Gottlob&Leitsch
+1
+
+#15
+# Use of other reduction rules:
+true
+
+#16
+# Maximal size of a clause: (0 -> no limit)
+0
+
+#23
+# Maximal number of variables in a clause: (0 -> no limit)
+0
+
+#17
+# Trace degree: (0: Nothing, 1: Inferences, 2: Detailed, 3: All)
+1
+
+#18
+# Research strategy:  1: Non-Complete   2: Complete
+#                     3: Breadth-First  4: Otter-like
+2
+
+#19
+# Preference for:  1: Conjecture         2: Theory
+#                  3: Negative clauses   4: 1+3    5: 2+3
+#                  6: Positive clauses   7: 1+6    8: 2+6
+#                  0: No preference
+4
+
+#20
+# Try to simplify before the test of subsumption:
+true
+
+#21
+# Use of Superposition Strategy:  (false -> Paramodulation)
+# don't care, we have no real equational axioms
+true
+
+#211
+# Maximal depth for superposition/paramodulation: (0 -> no limit)
+0
+
+#22
+# Use of particular treatment for non-equational literals:
+true
