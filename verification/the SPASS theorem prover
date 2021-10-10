@@ -1,0 +1,84 @@
+begin_problem(CPS).
+
+list_of_descriptions.
+    name({*CPS composition*}). 
+    author({*Yannick Chevalier*}).
+    status(unsatisfiable).
+    description({*Test of composition of CPSs described by their properties.*}).
+end_of_list.
+
+list_of_symbols.
+  functions[(plugable,3),(plug,2),(append,2),(closed,0),(chassis0,0),(wheel0,0),
+  (battery0,0),(motor0,0),(wheel,0),(battery,0),(motor,0),(female,0),(male,0)].
+  predicates[(component,2),(system,2),(has,2),(moveable,1)].
+end_of_list.
+
+list_of_formulae(axioms).
+
+    % plugable is a list constructor (Associative-Unit left/right)
+    % This is a hack, but we would need a better theorem prover.
+
+    % AC unification doesn't seem to be handled by SPASS. So we resort to
+    % lists, with the side effects:
+    % (a) it makes deduction faster;
+    % (b) the append axioms needed mean the system will diverge anyway
+    %     by paramodulation into the plug formula; 
+    % (c) this model is incomplete if systems can have both male and
+    %     female slots.
+	 
+  	formula(component(chassis0,plugable(female,battery,plugable(female,motor,
+  	plugable(female,wheel,closed)))),chassis0_slots_def).
+  	formula(component(motor0,plugable(male,motor,closed)),motor0_slots_def).
+  	formula(component(battery0,plugable(male,battery,closed)),battery0_slots_def).
+  	formula(component(wheel0,plugable(male,wheel,closed)),wheel0_slots_def).
+
+    % component properties definition (self-explanatory)
+    formula(has(battery,battery0),battery0_content_def).
+    formula(has(wheel,wheel0),wheel0_content_def).
+    formula(has(motor,motor0),motor0_content_def).
+    
+    % requirements: system can move if it has a motor, a battery, and wheels
+    formula(forall([X,Y],
+    implies(and(system(X,Y),and(has(battery,X),and(has(motor,X),has(wheel,X)))),
+        moveable(X))),
+            moveable_definition).
+	
+    % construction actions description
+    
+    % 1. all components are (atomic) systems
+    formula(forall([X,Y],implies(component(X,Y),system(X,Y)))).
+
+    % 2. content of systems is preserved by assembly
+    formula(forall([X,XT,Y,YT,Z],implies(and(system(X,XT),and(system(Y,YT),
+    has(Z,X))),has(Z,plug(X,Y)))),content_preservation_left).
+    
+    formula(forall([X,XT,Y,YT,Z],implies(and(system(X,XT),and(system(Y,YT),
+    has(Z,Y))),has(Z,plug(X,Y)))),content_preservation_right).
+	
+    % 3. two systems that have compatible slots can be plugged
+    formula(forall([X,Y,Type,XPlugables_tail,YPlugables_tail],
+    implies(and(system(X,plugable(female,Type,XPlugables_tail)),
+            system(Y,plugable(male,Type,YPlugables_tail))),
+                system(plug(X,Y),XPlugables_tail)))).
+
+end_of_list.
+
+list_of_formulae(conjectures).
+
+    % Given the axioms, a value of X satisfying this formula is
+    % a recipe to construct the corresponding system
+    formula(exists([X,Y],and(system(X,Y),moveable(X))),goal).
+    % solution: X = component(plug(plug(plug(plug(chassis0,battery0),
+                    motor0),wheel0),plug(plug(chassis0,battery0),
+                    motor0)),u).
+end_of_list.
+
+list_of_settings(SPASS).
+
+    {*set_flag(PGiven,1).
+    set_flag(PProblem,1).
+    set_flag(FPModel,1).*}
+    
+end_of_list.
+
+end_problem.
