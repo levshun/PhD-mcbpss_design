@@ -25,7 +25,6 @@ They were used to investigate possibilities to build a mobile robots based on av
 
 Documents folder cotains latests versions of:
 - thesis
-- synopsis of the thesis
-- prsentation of the thesis
+- prsentation
 
 If you have any questions, please, contact me using the following email: dmitry.levshun@gmail.com
